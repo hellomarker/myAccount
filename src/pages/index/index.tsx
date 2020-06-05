@@ -1,18 +1,29 @@
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Text } from '@tarojs/components'
+import { View, Text, Button } from '@tarojs/components'
 import './index.scss'
 
-export default class Index extends Component {
+import AccountList from '../../components/index/accountList/index'
+import AddPopups from '../../components/index/addPopups/index'
 
-  componentWillMount () { }
+export default class Index extends Component<any, any> {
 
-  componentDidMount () { }
+  constructor(props) {
+    super(props)
+    this.state = {
+      isShowAddPopups: false,
+      list: ['你好']
+    }
+  }
 
-  componentWillUnmount () { }
+  componentWillMount() { }
 
-  componentDidShow () { }
+  componentDidMount() { }
 
-  componentDidHide () { }
+  componentWillUnmount() { }
+
+  componentDidShow() { }
+
+  componentDidHide() { }
 
   /**
    * 指定config的类型声明为: Taro.Config
@@ -22,13 +33,21 @@ export default class Index extends Component {
    * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
    */
   config: Config = {
-    navigationBarTitleText: '首页'
+    navigationBarTitleText: '记账⑧'
   }
 
-  render () {
+  render() {
+    const { isShowAddPopups, list } = this.state
     return (
-      <View className='index'>
-        <Text>Hello world!</Text>
+      <View className='page'>
+        {/* TODO 账目列表 */}
+        <AccountList list={list}></AccountList>
+        {/* TODO 一个浮动的添加按钮 */}
+        <View className='bottom-fixed'>
+          <Text className='icon-add' onClick={() => this.setState({ isShowAddPopups: !isShowAddPopups })}></Text>
+        </View>
+        {/* TODO 添加浮框 */}
+        <AddPopups isShow={isShowAddPopups} hide={() => this.setState({ isShowAddPopups: false })} submit={e => this.setState({ list: [...list, e] })}></AddPopups>
       </View>
     )
   }

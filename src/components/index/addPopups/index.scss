@@ -1,0 +1,11 @@
+.popups {
+  position: fixed;
+  bottom: 0;
+  width: 100vw;
+  transform: translateY(100px);
+  transition: all 0.3s;
+  background-color: pink;
+  &.show {
+    transform: translateY(0);
+  }
+}
