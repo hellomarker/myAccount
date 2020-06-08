@@ -4,8 +4,15 @@
   width: 100vw;
   transform: translateY(100px);
   transition: all 0.3s;
-  background-color: pink;
+  background-color: #ddd;
+  border-radius: 40px 40px 0 0;
   &.show {
     transform: translateY(0);
+  }
+  input {
+    margin: 20px;
+    padding: 0 20px;
+  }
+  .input-item {
   }
 }

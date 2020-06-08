@@ -23,7 +23,15 @@ export default class AddPopups extends Component<Props, State> {
     const { isShow, submit } = this.props
     return (
       <View className={`popups ${isShow ? 'show' : ''}`}>
-        <Input focus={isShow} onBlur={this.props.hide.bind(this)} onConfirm={e => submit(e.detail.value.trim())}></Input>
+        <Input
+          placeholder='要记什么？'
+          focus={isShow}
+          onBlur={this.props.hide.bind(this)}
+          onConfirm={e => submit(e.detail.value.trim())}
+        ></Input>
+        <View className='input-item'>
+
+        </View>
       </View>
     )
   }
