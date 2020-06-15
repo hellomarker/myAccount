@@ -1,11 +1,18 @@
 .page {
   .bottom-fixed {
     position: fixed;
-    right: 30px;
+    right: 40px;
     bottom: 50px;
     .icon-add {
-      color: #557cf1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #557cf1;
+      color: #fff;
       font-size: 68px;
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
     }
   }
 }

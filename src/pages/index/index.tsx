@@ -47,7 +47,7 @@ export default class Index extends Component<any, any> {
           <Text className='icon-add' onClick={() => this.setState({ isShowAddPopups: !isShowAddPopups })}></Text>
         </View>
         {/* TODO 添加浮框 */}
-        <AddPopups isShow={isShowAddPopups} hide={() => this.setState({ isShowAddPopups: false })} submit={e => this.setState({ list: [...list, e] })}></AddPopups>
+        <AddPopups isShow={isShowAddPopups} onHide={() => this.setState({ isShowAddPopups: false })} onSubmit={e => this.setState({ list: [...list, e] })}></AddPopups>
       </View>
     )
   }

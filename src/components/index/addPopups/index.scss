@@ -1,18 +1,43 @@
-.popups {
+.mask {
   position: fixed;
-  bottom: 0;
+  top: 0;
   width: 100vw;
-  transform: translateY(100px);
+  height: 100vh;
+  background-color: #0000;
   transition: all 0.3s;
-  background-color: #ddd;
-  border-radius: 40px 40px 0 0;
+  visibility: hidden;
   &.show {
+    visibility: visible;
+    background-color: #3333;
+  }
+  &.show .popups {
     transform: translateY(0);
   }
-  input {
-    margin: 20px;
-    padding: 0 20px;
-  }
-  .input-item {
+  .popups {
+    transition: all 0.3s;
+    position: absolute;
+    transform: translateY(100%);
+    bottom: 0;
+    width: 100vw;
+    background-color: #ddd;
+    border-radius: 40px 40px 0 0;
+    input {
+      margin: 20px;
+      padding: 0 20px;
+    }
+    .input-list {
+      display: flex;
+      View {
+        border: 1px solid #557cf1;
+        color: #557cf1;
+        border-radius: 10px;
+        padding: 10px 20px;
+        margin: 10px;
+        &.active {
+          background-color: #557cf1;
+          color: #fff;
+        }
+      }
+    }
   }
 }
