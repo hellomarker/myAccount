@@ -4,18 +4,28 @@ import './index.scss'
 
 import AccountList from '../../components/index/accountList/index'
 import AddPopups from '../../components/index/addPopups/index'
+import { dateConvert } from '../../common/date'
 
-export default class Index extends Component<any, any> {
+interface State {
+  isShowAddPopups: boolean
+  list: {}
+}
+
+export default class Index extends Component<any, State> {
 
   constructor(props) {
     super(props)
     this.state = {
       isShowAddPopups: false,
-      list: ['你好']
+      list: {}
     }
   }
 
-  componentWillMount() { }
+  componentWillMount() {
+    this.setState({
+      list: Taro.getStorageSync('list')
+    })
+  }
 
   componentDidMount() { }
 
@@ -36,18 +46,29 @@ export default class Index extends Component<any, any> {
     navigationBarTitleText: '记账⑧'
   }
 
+  add(obj) {
+    const { list } = this.state
+    const dateKey = dateConvert(obj.date, "YYYY年MM月DD日")
+    if (list[dateKey]) {
+      list[dateKey].push(obj)
+      list[dateKey] = list[dateKey].sort((a, b) => a.date - b.date)
+    }
+    else list[dateKey] = [obj]
+    this.setState({ list: { ...list } }, () => Taro.setStorageSync('list', this.state.list))
+  }
+
   render() {
     const { isShowAddPopups, list } = this.state
     return (
       <View className='page'>
-        {/* TODO 账目列表 */}
+        {/*  账目列表 */}
         <AccountList list={list}></AccountList>
-        {/* TODO 一个浮动的添加按钮 */}
+        {/*  一个浮动的添加按钮 */}
         <View className='bottom-fixed'>
           <Text className='icon-add' onClick={() => this.setState({ isShowAddPopups: !isShowAddPopups })}></Text>
         </View>
-        {/* TODO 添加浮框 */}
-        <AddPopups isShow={isShowAddPopups} onHide={() => this.setState({ isShowAddPopups: false })} onSubmit={e => this.setState({ list: [...list, e] })}></AddPopups>
+        {/*  添加浮框 */}
+        <AddPopups isShow={isShowAddPopups} onHide={() => this.setState({ isShowAddPopups: false })} onSubmit={this.add.bind(this)}></AddPopups>
       </View>
     )
   }

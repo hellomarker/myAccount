@@ -13,8 +13,7 @@ interface Props {
 interface State {
   inputValue: string
   tags: {
-    date: string
-    nodate: boolean
+    date: number
     money: Number
   }
 }
@@ -27,19 +26,23 @@ export default class AddPopups extends Component<Props, State> {
     super(props)
     this.state = {
       inputValue: '',
-      tags: { date: '', nodate: false, money: 0 },
+      tags: { date: 0, money: 0 },
     }
   }
 
   onInput(e) {
     const inputValue = e.detail.value.trim(), tags = { ...this.state.tags }
     const datetime = matchDate(inputValue), money = machMoney(inputValue)
-    if (datetime) tags.date = dateConvert(datetime, 'YYYY年MM月DD日 HH:mm')
-    if (money) {
-      tags.money = money
-      debugger
-    }
+    if (datetime) tags.date = datetime
+    else tags.date = 0
+    if (money) tags.money = money
+    else tags.money = 0
     this.setState({ inputValue, tags, })
+  }
+  onConfirm() {
+    const { tags, inputValue } = this.state
+    if (!tags.date) tags.date = Date.now()
+    this.props.onSubmit({ inputValue, ...tags })
   }
 
   maskHide(e) {
@@ -47,7 +50,7 @@ export default class AddPopups extends Component<Props, State> {
   }
 
   render() {
-    const { isShow, onSubmit } = this.props
+    const { isShow } = this.props
     const { tags, inputValue } = this.state
     return (
       <View id='mask' className={`mask ${isShow ? 'show' : ''}`} onClick={this.maskHide}>
@@ -58,11 +61,11 @@ export default class AddPopups extends Component<Props, State> {
             value={inputValue}
             // onBlur={this.props.hide.bind(this)}
             onInput={this.onInput}
-            onConfirm={e => onSubmit(e.detail.value.trim())}
+            onConfirm={this.onConfirm}
           ></Input>
           <View className='input-list'>
-            {tags.date && <View className={tags.nodate ? '' : 'active'} onClick={() => this.setState({ tags: { ...tags, nodate: !tags.nodate } })}>{tags.date}</View>}
-            {tags.money && <View>{tags.money}</View>}
+            <View className={tags.date ? '' : 'gray'}><Text className='iconfont icon-rili'></Text>{tags.date ? dateConvert(tags.date, 'YYYY年MM月DD日 HH:mm') : ''}</View>
+            <View className={tags.money ? '' : 'gray'}><Text className='iconfont icon-jine'></Text>{tags.money ? tags.money : ''}</View>
           </View>
         </View>
       </View >

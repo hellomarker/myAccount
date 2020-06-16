@@ -1,3 +1,4 @@
+@import url("../../../assets/iconfont.css");
 .mask {
   position: fixed;
   top: 0;
@@ -27,16 +28,17 @@
     }
     .input-list {
       display: flex;
+      flex-wrap: wrap;
       View {
         border: 1px solid #557cf1;
         color: #557cf1;
         border-radius: 10px;
         padding: 10px 20px;
         margin: 10px;
-        &.active {
-          background-color: #557cf1;
-          color: #fff;
-        }
+      }
+      .gray {
+        color: gray;
+        border: 1px solid gray;
       }
     }
   }

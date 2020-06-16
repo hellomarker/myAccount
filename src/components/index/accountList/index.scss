@@ -1,8 +1,31 @@
+@import url("../../../assets/iconfont.css");
+
 .list {
-  padding: 0 20px;
-  .list-item {
+  .list-title {
     display: flex;
     justify-content: space-between;
+    padding: 0 20px;
+    background-color: #557cf144;
+    color: gray;
     align-items: center;
+    .iconfont {
+      margin-left: 10px;
+      transform: rotate(-90deg);
+      transition: all 0.3s;
+      &.down {
+        transform: rotate(-180deg);
+      }
+      &:hover {
+        transform: rotate(-180deg);
+      }
+    }
+  }
+  .list-content {
+    padding: 0 20px;
+    .list-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
   }
 }
