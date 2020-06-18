@@ -13,7 +13,8 @@ interface Props {
 interface State {
   inputValue: string
   tags: {
-    date: number
+    datetime: number
+    match: string
     money: Number
   }
 }
@@ -26,22 +27,21 @@ export default class AddPopups extends Component<Props, State> {
     super(props)
     this.state = {
       inputValue: '',
-      tags: { date: 0, money: 0 },
+      tags: { datetime: 0, money: 0, match: '' },
     }
   }
 
   onInput(e) {
-    const inputValue = e.detail.value.trim(), tags = { ...this.state.tags }
-    const datetime = matchDate(inputValue), money = machMoney(inputValue)
-    if (datetime) tags.date = datetime
-    else tags.date = 0
+    let inputValue = e.detail.value.trim(), tags = { ...this.state.tags }
+    const matchObj = matchDate(inputValue), money = machMoney(inputValue)
+    tags = { ...tags, ...matchObj }
     if (money) tags.money = money
     else tags.money = 0
     this.setState({ inputValue, tags, })
   }
   onConfirm() {
     const { tags, inputValue } = this.state
-    if (!tags.date) tags.date = Date.now()
+    if (!tags.datetime) tags.datetime = Date.now()
     this.props.onSubmit({ inputValue, ...tags })
   }
 
@@ -64,7 +64,7 @@ export default class AddPopups extends Component<Props, State> {
             onConfirm={this.onConfirm}
           ></Input>
           <View className='input-list'>
-            <View className={tags.date ? '' : 'gray'}><Text className='iconfont icon-rili'></Text>{tags.date ? dateConvert(tags.date, 'YYYY年MM月DD日 HH:mm') : ''}</View>
+            <View className={tags.match ? '' : 'gray'}><Text className='iconfont icon-rili'></Text>{tags.match}</View>
             <View className={tags.money ? '' : 'gray'}><Text className='iconfont icon-jine'></Text>{tags.money ? tags.money : ''}</View>
           </View>
         </View>

@@ -4,14 +4,12 @@
   .list-title {
     display: flex;
     justify-content: space-between;
-    padding: 0 20px;
-    background-color: #557cf144;
-    color: gray;
+    padding: 10px 20px;
     align-items: center;
     .iconfont {
       margin-left: 10px;
       transform: rotate(-90deg);
-      transition: all 0.3s;
+      transition: all ease-in-out 0.8s;
       &.down {
         transform: rotate(-180deg);
       }
@@ -19,10 +17,18 @@
   }
   .list-content {
     padding: 0 20px;
+    transition: all all ease-in-out 0.8s;
+    overflow: hidden;
     .list-item {
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      padding: 10px 0;
+      View {
+        padding: 0 10px;
+      }
+      .money {
+        color: gray;
+      }
     }
   }
 }

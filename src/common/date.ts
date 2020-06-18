@@ -1,20 +1,20 @@
 // 为什么不能用(?<=)呀 真***
 // const reg = /([前昨今明后][天日早中晚])?([凌早中晚][晨午上])?[\d]((?<=0|1)[\d]|(?<=2)[0-4])?[点时:-]([\d]((?<=0|1)[\d]|(?<=2)[0-4])?[分])?/;
-const reg = /([前昨今明后][天日早晚])?([凌早上中下晚][晨午上])?([1一十](\d|[一二三四五六七八九])?|[2二两]([0-4]|十[一二三四]?)?|[3-9三四五六七八九])[点时:-]([二三四五](十[一二三四五六七八九]?)?|[12345一二两三四五十](\d|[一二三四五六七八九])?|[6-9六七八九半])?[分]?/;
+const DateTimeReg = /([前昨今明后][天日早晚])?([凌早上中下晚][晨午上])?([1一十](\d|[一二三四五六七八九])?|[2二两]([0-4]|十[一二三四]?)?|[3-9三四五六七八九])[点时:-]([二三四五](十[一二三四五六七八九]?)?|[12345一二两三四五十](\d|[一二三四五六七八九])?|[6-9六七八九半])?[分]?/;
 
 /**
  * 匹配各种格式的时间表述，使其变成数字显示
  * @param str 需要从中找出时间表述的字符串
  * @returns 返回时间戳
  */
-export const matchDate = (str: string) => {
-  let result = reg.exec(str);
+export const matchDateTime = (str: string) => {
+  let result = DateTimeReg.exec(str);
   if (result) str = result[0];
   else return 0;
 
   let datetime;
   return parseInt(
-    str.replace(reg, (match, p1, p2, p3, p4, p5, p6) => {
+    str.replace(DateTimeReg, (match, p1, p2, p3, p4, p5, p6) => {
       // 确认哪年哪月
       datetime = new Date(
         dateConvert(Date.now(), "yyyy/MM/DD 00:00")
@@ -107,6 +107,51 @@ export const matchDate = (str: string) => {
       }
 
       return datetime;
+    })
+  );
+};
+
+const DateReg = /([前昨今明后])[天日]/;
+
+interface MatchResult {
+  match: string;
+  datetime: number;
+}
+/**
+ * 匹配各种格式的日期表述，使其变成数字显示
+ * @param str 需要从中找出时间表述的字符串
+ * @returns match[前昨今明后] datetime时间戳
+ */
+export const matchDate = (str: string): MatchResult => {
+  let result = DateReg.exec(str);
+  if (result) str = result[0];
+  else return { match: "", datetime: 0 };
+
+  let datetime;
+  return JSON.parse(
+    str.replace(DateReg, (match, p1) => {
+      // 确认哪年哪月
+      datetime = new Date(
+        dateConvert(Date.now(), "yyyy/MM/DD 00:00")
+      ).getTime();
+      // 确认哪日
+      if (p1)
+        switch (p1.substr(0, 1)) {
+          case "前":
+            datetime -= 1000 * 60 * 60 * 24 * 2;
+            break;
+          case "昨":
+            datetime -= 1000 * 60 * 60 * 24 * 1;
+            break;
+          case "明":
+            datetime += 1000 * 60 * 60 * 24 * 1;
+            break;
+          case "后":
+            datetime += 1000 * 60 * 60 * 24 * 2;
+            break;
+        }
+
+      return JSON.stringify({ match, datetime });
     })
   );
 };

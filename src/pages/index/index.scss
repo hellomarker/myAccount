@@ -1,4 +1,9 @@
 .page {
+  min-height: 100vh;
+  background-image: url(../../assets/images/point.png);
+  background-repeat: repeat-y;
+  background-size: 1px;
+  background-position: center;
   .bottom-fixed {
     position: fixed;
     right: 40px;
