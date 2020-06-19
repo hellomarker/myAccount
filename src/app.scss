@@ -1,8 +1,10 @@
 @import url("./assets/iconfont.css");
+@import url("./assets/font/stylesheet.css");
 page {
   background-color: #f0f0f0;
   min-height: 100vh;
   position: relative;
+  font-family: "Google Sans", "SimHei";
 }
 
 $primany: #557cf1;
