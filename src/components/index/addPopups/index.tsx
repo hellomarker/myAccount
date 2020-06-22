@@ -12,11 +12,12 @@ interface Props {
 }
 interface State {
   inputValue: string
+  content: string
   tags: {
     datetime: number
-    match: string
+    matchDate: string
     money: Number
-    moneyMatch: string
+    matchMoney: string
     billType: boolean
   }
 }
@@ -29,7 +30,7 @@ export default class AddPopups extends Component<Props, State> {
     super(props)
     this.state = {
       inputValue: '',
-      tags: { datetime: 0, money: 0, match: '', moneyMatch: '', billType: false },
+      tags: { datetime: 0, money: 0, matchDate: '', matchMoney: '', billType: false },
     }
   }
 
@@ -42,12 +43,14 @@ export default class AddPopups extends Component<Props, State> {
     this.setState({ inputValue, tags, })
   }
   onConfirm() {
-    let { tags, inputValue } = this.state
-    inputValue = inputValue.replace(tags.match, '')
-    inputValue = inputValue.replace(tags.moneyMatch, '')
+    let { tags, inputValue, content } = this.state
+    content = inputValue.replace(tags.matchDate, '')
+    content = content.replace(tags.matchMoney, '')
     if (!tags.datetime) tags.datetime = Date.now()
-    this.props.onSubmit({ inputValue, ...tags })
-    this.setState({ inputValue: '', tags: { datetime: 0, money: 0, match: '', moneyMatch: '', billType: false } })
+    if (tags.money)
+      this.setState({ inputValue: '', content: '', tags: { datetime: 0, money: 0, matchDate: '', matchMoney: '', billType: false } })
+    this.props.onSubmit({ inputValue, content, ...tags })
+    this.setState({ inputValue: '', content: '', tags: { datetime: 0, money: 0, matchDate: '', matchMoney: '', billType: false } })
   }
 
   maskHide(e) {
@@ -69,7 +72,7 @@ export default class AddPopups extends Component<Props, State> {
             onConfirm={this.onConfirm}
           ></Input>
           <View className='input-list'>
-            <View className={tags.match ? '' : 'gray'}><Text className='iconfont icon-rili'></Text>{tags.match}</View>
+            <View className={tags.matchDate ? '' : 'gray'}><Text className='iconfont icon-rili'></Text>{tags.matchDate}</View>
             <View className={tags.money ? '' : 'gray'}><Text className='iconfont icon-jine'></Text>{tags.money ? tags.money : ''}</View>
           </View>
         </View>

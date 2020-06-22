@@ -151,7 +151,7 @@ export const matchDate = (str: string): MatchResult => {
             break;
         }
 
-      return JSON.stringify({ match, datetime });
+      return JSON.stringify({ matchDate: match, datetime });
     })
   );
 };

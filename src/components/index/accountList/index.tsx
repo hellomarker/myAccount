@@ -28,23 +28,26 @@ export default class AccountList extends Component<any, any> {
     return (
       keys.map(key => (
         <View key={key} className='list'>
-          {/* <View className='list-title' data-key={key} >
+          <View className='list-title' data-key={key} >
             <Text>{this.shortDate(key)}</Text>
-            <Text>{list[key].count}</Text>
-          </View> */}
+            <Text>
+              {list[key].sCount && <Text>收入: {list[key].sCount}&#12288;</Text>}
+              {list[key].zCount && <Text> 支出: {list[key].zCount}</Text>}
+            </Text>
+          </View>
           <View className='list-content'>
             {
               list[key].items.map((e, j) => (
                 <View key={j} className='list-item'>
                   <View className='left'>
-                    {e.billType && <Text className='content'>{e.inputValue}</Text>}
+                    {e.billType && <Text className='content'>{e.content}</Text>}
                     {e.billType && <Text className='money'>{e.money}</Text>}
                   </View>
                   <View key={j} className='right'>
-                    {!e.billType && <Text className='content'>{e.inputValue}</Text>}
+                    {!e.billType && <Text className='content'>{e.content}</Text>}
                     {!e.billType && <Text className='money'>{e.money}</Text>}
                   </View>
-                  <Text className='icon'>{e.billType ? '收' : '支'}</Text>
+                  {/* <Text className='icon'>{e.billType ? '收' : '支'}</Text> */}
                 </View>
               ))
             }

@@ -49,12 +49,14 @@ export default class Index extends Component<any, State> {
   add(obj) {
     const { list } = this.state
     const dateKey = dateConvert(obj.datetime, 'YYYY/MM/DD')
-    if (list[dateKey]) {
-      list[dateKey].items.unshift(obj)
-      list[dateKey].count += obj.money
-      // list[dateKey] = list[dateKey].sort((a, b) => a.datetime - b.datetime)
+    if (!list[dateKey]) {
+      list[dateKey] = { items: [], sCount: 0, zCount: 0 }
     }
-    else list[dateKey] = { items: [obj], count: obj.money }
+    list[dateKey].items.unshift(obj)
+    if (obj.billType)
+      list[dateKey].sCount += obj.money
+    else
+      list[dateKey].zCount += obj.money
     this.setState({ list: { ...list } }, () => Taro.setStorageSync('list', this.state.list))
   }
 

@@ -30,9 +30,8 @@ export const machMoney = (str: string) => {
         千: 1000,
         万: 10000
       };
-      if (p1 != "") billType = true;
+      if (p1) billType = true;
       // 确认整数
-      debugger;
       let curr = 1;
       if (/[一二两三四五六七八九十百千万]/.test(p2))
         for (let i = 0; i < p2.length; i++) {
@@ -51,7 +50,7 @@ export const machMoney = (str: string) => {
       // 确认小数
       if (!/[\.]/.test(p2))
         if (/[一二两三四五六七八九]/.test(p3)) money += zh[p3] * 0.1;
-      return JSON.stringify({ match, money, billType });
+      return JSON.stringify({ matchMoney: match, money, billType });
     })
   );
 };
