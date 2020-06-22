@@ -22,9 +22,8 @@ export default class Index extends Component<any, State> {
   }
 
   componentWillMount() {
-    this.setState({
-      list: Taro.getStorageSync('list')
-    })
+    const list = Taro.getStorageSync('list')
+    this.setState({ list: list })
   }
 
   componentDidMount() { }
@@ -48,16 +47,24 @@ export default class Index extends Component<any, State> {
 
   add(obj) {
     const { list } = this.state
-    const dateKey = dateConvert(obj.datetime, 'YYYY/MM/DD')
-    if (!list[dateKey]) {
-      list[dateKey] = { items: [], sCount: 0, zCount: 0 }
+    const dayKey = dateConvert(obj.datetime, 'YYYY/MM/DD'), monthKey = dateConvert(obj.datetime, 'YYYY/MM')
+    // 计算月和日的支出收入
+    if (!list[monthKey]) {
+      list[monthKey] = { items: [], sCount: 0, zCount: 0 }
     }
-    list[dateKey].items.unshift(obj)
-    if (obj.billType)
-      list[dateKey].sCount += obj.money
-    else
-      list[dateKey].zCount += obj.money
-    this.setState({ list: { ...list } }, () => Taro.setStorageSync('list', this.state.list))
+    if (!list[monthKey].items[dayKey]) {
+      list[monthKey].items[dayKey] = { items: [], sCount: 0, zCount: 0 }
+    }
+    list[monthKey].items[dayKey].items.unshift(obj)
+    if (obj.billType) {
+      list[monthKey].sCount += obj.money
+      list[monthKey].items[dayKey].sCount += obj.money
+    } else {
+      list[monthKey].zCount += obj.money
+      list[monthKey].items[dayKey].zCount += obj.money
+    }
+    this.setState({ list: { ...list } }, () => Taro.setStorageSync('list', list))
+    console.dir(JSON.stringify(list))
   }
 
   render() {

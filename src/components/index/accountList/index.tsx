@@ -24,36 +24,43 @@ export default class AccountList extends Component<any, any> {
 
   render() {
     const { list } = this.props
-    const keys = Object.keys(list).reverse()
+    const monthkeys = Object.keys(list).reverse()
     return (
-      keys.map(key => (
-        <View key={key} className='list'>
-          <View className='list-title' data-key={key} >
-            <Text>{this.shortDate(key)}</Text>
-            <Text>
-              {list[key].sCount && <Text>收入: {list[key].sCount}&#12288;</Text>}
-              {list[key].zCount && <Text> 支出: {list[key].zCount}</Text>}
-            </Text>
-          </View>
-          <View className='list-content'>
+      monthkeys.map(month => {
+        const daykeys = Object.keys(list[month].items).reverse()
+        return (
+          <View key={month} className='list'>
+            <View className='list-month-title' data-key={month}></View>
             {
-              list[key].items.map((e, j) => (
-                <View key={j} className='list-item'>
-                  <View className='left'>
-                    {e.billType && <Text className='content'>{e.content}</Text>}
-                    {e.billType && <Text className='money'>{e.money}</Text>}
+              daykeys.map(day => (
+                <View key={day}>
+                  <View className='list-day-title' data-key={month} >
+                    <Text>{this.shortDate(day)}</Text>
+                    <Text>
+                      {list[day].sCount && <Text>收入: {list[day].sCount}&#12288;</Text>}
+                      {list[day].zCount && <Text> 支出: {list[day].zCount}</Text>}
+                    </Text>
                   </View>
-                  <View key={j} className='right'>
-                    {!e.billType && <Text className='content'>{e.content}</Text>}
-                    {!e.billType && <Text className='money'>{e.money}</Text>}
+                  <View className='list-content'>
+                    {
+                      list[day].items.map((e, j) => (
+                        <View key={j} className='list-item'>
+                          <View className='left'>
+                            <Text className='content'>{e.content}</Text>
+                            <Text className='money'>{(e.billType ? '+' : '-') + e.money}</Text>
+                          </View>
+                          {/* <Text className='icon'>{e.billType ? '收' : '支'}</Text> */}
+                        </View>
+                      ))
+                    }
                   </View>
-                  {/* <Text className='icon'>{e.billType ? '收' : '支'}</Text> */}
                 </View>
               ))
             }
+
           </View>
-        </View>
-      ))
+        )
+      })
     )
   }
 }
