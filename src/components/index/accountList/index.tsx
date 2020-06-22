@@ -28,16 +28,23 @@ export default class AccountList extends Component<any, any> {
     return (
       keys.map(key => (
         <View key={key} className='list'>
-          <View className='list-title' data-key={key} >
+          {/* <View className='list-title' data-key={key} >
             <Text>{this.shortDate(key)}</Text>
             <Text>{list[key].count}</Text>
-          </View>
+          </View> */}
           <View className='list-content'>
             {
               list[key].items.map((e, j) => (
-                <View key={j} className='list-item right'>
-                  <View>{e.inputValue}</View>
-                  <View className='money'>{e.money}</View>
+                <View key={j} className='list-item'>
+                  <View className='left'>
+                    {e.billType && <Text className='content'>{e.inputValue}</Text>}
+                    {e.billType && <Text className='money'>{e.money}</Text>}
+                  </View>
+                  <View key={j} className='right'>
+                    {!e.billType && <Text className='content'>{e.inputValue}</Text>}
+                    {!e.billType && <Text className='money'>{e.money}</Text>}
+                  </View>
+                  <Text className='icon'>{e.billType ? '收' : '支'}</Text>
                 </View>
               ))
             }

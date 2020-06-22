@@ -16,6 +16,8 @@ interface State {
     datetime: number
     match: string
     money: Number
+    moneyMatch: string
+    billType: boolean
   }
 }
 
@@ -27,22 +29,25 @@ export default class AddPopups extends Component<Props, State> {
     super(props)
     this.state = {
       inputValue: '',
-      tags: { datetime: 0, money: 0, match: '' },
+      tags: { datetime: 0, money: 0, match: '', moneyMatch: '', billType: false },
     }
   }
 
   onInput(e) {
-    let inputValue = e.detail.value.trim(), tags = { ...this.state.tags }
-    const matchObj = matchDate(inputValue), money = machMoney(inputValue)
+    let inputValue: string = e.detail.value.trim(), tags = { ...this.state.tags }
+    const matchObj = matchDate(inputValue), moneyObj = machMoney(inputValue)
     tags = { ...tags, ...matchObj }
-    if (money) tags.money = money
+    if (moneyObj) tags = { ...tags, ...moneyObj }
     else tags.money = 0
     this.setState({ inputValue, tags, })
   }
   onConfirm() {
-    const { tags, inputValue } = this.state
+    let { tags, inputValue } = this.state
+    inputValue = inputValue.replace(tags.match, '')
+    inputValue = inputValue.replace(tags.moneyMatch, '')
     if (!tags.datetime) tags.datetime = Date.now()
     this.props.onSubmit({ inputValue, ...tags })
+    this.setState({ inputValue: '', tags: { datetime: 0, money: 0, match: '', moneyMatch: '', billType: false } })
   }
 
   maskHide(e) {
