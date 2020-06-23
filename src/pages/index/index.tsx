@@ -22,8 +22,15 @@ export default class Index extends Component<any, State> {
   }
 
   componentWillMount() {
+    let newList = {}
     const list = Taro.getStorageSync('list')
-    this.setState({ list })
+    const dayKeys = Object.keys(list)
+    dayKeys.forEach(day => {
+      if (!newList[dateConvert(day, 'YYYY/MM')])
+        newList[dateConvert(day, 'YYYY/MM')] = { items: { [day]: list[day] }, sCount: list[day].sCount, zCount: list[day].zCount }
+    })
+
+    this.setState({ list: newList })
   }
 
   componentDidMount() { }

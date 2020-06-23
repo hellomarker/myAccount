@@ -2,10 +2,14 @@
 
 .list {
   .list-month-title {
+    position: sticky;
+    top: 0;
+    display: flex;
+    justify-content: space-around;
+    padding: 20px 0;
   }
   .list-day-title {
-    // background-color: #f0f0f0;
-    border-top: 1px solid #000;
+    background-color: #ccc;
     display: flex;
     justify-content: space-between;
     padding: 10px 20px;
