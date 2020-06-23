@@ -23,7 +23,7 @@ export default class Index extends Component<any, State> {
 
   componentWillMount() {
     const list = Taro.getStorageSync('list')
-    this.setState({ list: list })
+    this.setState({ list })
   }
 
   componentDidMount() { }
@@ -42,29 +42,23 @@ export default class Index extends Component<any, State> {
    * 提示和声明 navigationBarTextStyle: 'black' | 'white' 类型冲突, 需要显示声明类型
    */
   config: Config = {
-    navigationBarTitleText: '记账⑧'
+    navigationBarTitleText: '秒记账'
   }
 
   add(obj) {
     const { list } = this.state
-    const dayKey = dateConvert(obj.datetime, 'YYYY/MM/DD'), monthKey = dateConvert(obj.datetime, 'YYYY/MM')
+    const dayKey = dateConvert(obj.datetime, 'YYYY/MM/DD')
     // 计算月和日的支出收入
-    if (!list[monthKey]) {
-      list[monthKey] = { items: [], sCount: 0, zCount: 0 }
+    if (!list[dayKey]) {
+      list[dayKey] = { items: [], sCount: 0, zCount: 0 }
     }
-    if (!list[monthKey].items[dayKey]) {
-      list[monthKey].items[dayKey] = { items: [], sCount: 0, zCount: 0 }
-    }
-    list[monthKey].items[dayKey].items.unshift(obj)
+    list[dayKey].items.unshift(obj)
     if (obj.billType) {
-      list[monthKey].sCount += obj.money
-      list[monthKey].items[dayKey].sCount += obj.money
+      list[dayKey].sCount += obj.money
     } else {
-      list[monthKey].zCount += obj.money
-      list[monthKey].items[dayKey].zCount += obj.money
+      list[dayKey].zCount += obj.money
     }
-    this.setState({ list: { ...list } }, () => Taro.setStorageSync('list', list))
-    console.dir(JSON.stringify(list))
+    this.setState({ list }, () => Taro.setStorageSync('list', list))
   }
 
   render() {

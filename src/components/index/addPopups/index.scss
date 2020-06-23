@@ -40,6 +40,12 @@
         color: gray;
         border: 1px solid gray;
       }
+      Switch {
+        transform: scale(0.8);
+        &.red {
+          color: red;
+        }
+      }
     }
   }
 }

@@ -1,5 +1,5 @@
 import Taro, { Component, Config } from '@tarojs/taro'
-import { View, Text, Input, Label } from '@tarojs/components'
+import { View, Text, Input, Switch } from '@tarojs/components'
 import './index.scss'
 
 import { dateConvert, matchDate } from '../../../common/date'
@@ -19,6 +19,7 @@ interface State {
     money: Number
     matchMoney: string
     billType: boolean
+    reason: boolean
   }
 }
 
@@ -30,8 +31,12 @@ export default class AddPopups extends Component<Props, State> {
     super(props)
     this.state = {
       inputValue: '',
-      tags: { datetime: 0, money: 0, matchDate: '', matchMoney: '', billType: false },
+      content: "",
+      tags: { datetime: 0, money: 0, matchDate: '', matchMoney: '', billType: false, reason: true },
     }
+  }
+
+  componentDidMount() {
   }
 
   onInput(e) {
@@ -47,10 +52,8 @@ export default class AddPopups extends Component<Props, State> {
     content = inputValue.replace(tags.matchDate, '')
     content = content.replace(tags.matchMoney, '')
     if (!tags.datetime) tags.datetime = Date.now()
-    if (tags.money)
-      this.setState({ inputValue: '', content: '', tags: { datetime: 0, money: 0, matchDate: '', matchMoney: '', billType: false } })
     this.props.onSubmit({ inputValue, content, ...tags })
-    this.setState({ inputValue: '', content: '', tags: { datetime: 0, money: 0, matchDate: '', matchMoney: '', billType: false } })
+    this.setState({ inputValue: '', content: '', tags: { ...tags, datetime: 0, money: 0, matchDate: '', matchMoney: '', billType: false } })
   }
 
   maskHide(e) {
@@ -63,17 +66,20 @@ export default class AddPopups extends Component<Props, State> {
     return (
       <View id='mask' className={`mask ${isShow ? 'show' : ''}`} onClick={this.maskHide}>
         <View className={`popups `} >
-          <Input
-            placeholder='要记什么？'
-            focus={isShow}
-            value={inputValue}
-            // onBlur={this.props.hide.bind(this)}
-            onInput={this.onInput}
-            onConfirm={this.onConfirm}
-          ></Input>
+          {
+            isShow &&
+            <Input
+              placeholder='要记什么？'
+              focus={isShow}
+              value={inputValue}
+              onInput={this.onInput}
+              onConfirm={this.onConfirm}
+            ></Input>
+          }
           <View className='input-list'>
             <View className={tags.matchDate ? '' : 'gray'}><Text className='iconfont icon-rili'></Text>{tags.matchDate}</View>
             <View className={tags.money ? '' : 'gray'}><Text className='iconfont icon-jine'></Text>{tags.money ? tags.money : ''}</View>
+            <Switch className={`Switch ${tags.reason ? '' : 'red'}`} onChange={() => this.setState({ tags: { ...tags, reason: !tags.reason } })} checked={tags.reason}>{tags.reason ? '理性消费' : '非理性消费'}</Switch>
           </View>
         </View>
       </View >
