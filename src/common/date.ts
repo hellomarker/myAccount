@@ -114,7 +114,7 @@ export const matchDateTime = (str: string) => {
 const DateReg = /([前昨今明后])[天日]/;
 
 interface MatchResult {
-  match: string;
+  matchDate: string;
   datetime: number;
 }
 /**
@@ -125,7 +125,7 @@ interface MatchResult {
 export const matchDate = (str: string): MatchResult => {
   let result = DateReg.exec(str);
   if (result) str = result[0];
-  else return { match: "", datetime: 0 };
+  else return { matchDate: "", datetime: 0 };
 
   let datetime;
   return JSON.parse(

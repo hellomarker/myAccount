@@ -66,18 +66,22 @@ export default class AddPopups extends Component<Props, State> {
     return (
       <View id='mask' className={`mask ${isShow ? 'show' : ''}`} onClick={this.maskHide}>
         <View className={`popups `} >
-          {
-            isShow &&
-            <Input
-              placeholder='要记什么？'
-              focus={isShow}
-              value={inputValue}
-              onInput={this.onInput}
-              onConfirm={this.onConfirm}
-            ></Input>
-          }
+          <View className='input-box'>
+            {
+              isShow &&
+              <Input
+                cursor-spacing={720}
+                placeholder='例：昨天吃饭十五元 抢红包收入5.2元'
+                focus={isShow}
+                value={inputValue}
+                onInput={this.onInput}
+                onConfirm={this.onConfirm}
+              ></Input>
+            }
+            <Text className='iconfont icon-huichetijiao' onClick={this.onConfirm}></Text>
+          </View>
           <View className='input-list'>
-            <View className={tags.matchDate ? '' : 'gray'}><Text className='iconfont icon-rili'></Text>{tags.matchDate}</View>
+            <View><Text className={`iconfont icon-rili${tags.matchDate ? dateConvert(tags.datetime, 'D') : dateConvert(Date.now(), 'D')}`}></Text></View>
             <View className={tags.money ? '' : 'gray'}><Text className='iconfont icon-jine'></Text>{tags.money ? tags.money : ''}</View>
             <Switch className={`Switch ${tags.reason ? '' : 'red'}`} onChange={() => this.setState({ tags: { ...tags, reason: !tags.reason } })} checked={tags.reason}>{tags.reason ? '理性消费' : '非理性消费'}</Switch>
           </View>

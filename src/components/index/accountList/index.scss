@@ -7,6 +7,9 @@
     display: flex;
     justify-content: space-around;
     padding: 20px 0;
+    Text {
+      text-align: center;
+    }
   }
   .list-day-title {
     background-color: #ccc;
@@ -38,9 +41,6 @@
         justify-content: space-between;
         align-items: center;
         width: 100%;
-      }
-      .money {
-        font-family: "Google Sans";
       }
       .icon {
         position: absolute;

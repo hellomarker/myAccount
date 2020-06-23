@@ -34,7 +34,7 @@ export default class AccountList extends Component<any, any> {
               <Text>{dateConvert(month, "M")}月</Text>
               <Text>
                 {list[month].sCount && <Text>收入: {list[month].sCount}&#12288;</Text>}
-                {list[month].zCount && <Text> 支出: {list[month].zCount}</Text>}
+                {list[month].zCount && <Text>支出: {list[month].zCount}</Text>}
               </Text>
             </View>
             {

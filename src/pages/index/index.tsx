@@ -8,7 +8,12 @@ import { dateConvert } from '../../common/date'
 
 interface State {
   isShowAddPopups: boolean
-  list: {}
+  list: List,
+}
+interface List {
+  items: {}
+  sCount: Number
+  zCount: Number
 }
 
 export default class Index extends Component<any, State> {
@@ -17,20 +22,13 @@ export default class Index extends Component<any, State> {
     super(props)
     this.state = {
       isShowAddPopups: false,
-      list: {}
+      list: {},
     }
   }
 
   componentWillMount() {
-    let newList = {}
     const list = Taro.getStorageSync('list')
-    const dayKeys = Object.keys(list)
-    dayKeys.forEach(day => {
-      if (!newList[dateConvert(day, 'YYYY/MM')])
-        newList[dateConvert(day, 'YYYY/MM')] = { items: { [day]: list[day] }, sCount: list[day].sCount, zCount: list[day].zCount }
-    })
-
-    this.setState({ list: newList })
+    this.setState({ list })
   }
 
   componentDidMount() { }
@@ -54,16 +52,23 @@ export default class Index extends Component<any, State> {
 
   add(obj) {
     const { list } = this.state
+    const monthKey = dateConvert(obj.datetime, 'YYYY/MM')
     const dayKey = dateConvert(obj.datetime, 'YYYY/MM/DD')
     // 计算月和日的支出收入
-    if (!list[dayKey]) {
-      list[dayKey] = { items: [], sCount: 0, zCount: 0 }
+    if (!list[monthKey]) {
+      list[monthKey] = { items: {}, sCount: 0, zCount: 0 }
     }
-    list[dayKey].items.unshift(obj)
+    Taro.showModal({ content: JSON.stringify(list) })
+    if (!list[monthKey].items[dayKey]) {
+      list[monthKey].items[dayKey] = { items: [], sCount: 0, zCount: 0 }
+    }
+    list[monthKey].items[dayKey].items.unshift(obj)
     if (obj.billType) {
-      list[dayKey].sCount += obj.money
+      list[monthKey].sCount += obj.money
+      list[monthKey].items[dayKey].sCount += obj.money
     } else {
-      list[dayKey].zCount += obj.money
+      list[monthKey].zCount += obj.money
+      list[monthKey].items[dayKey].zCount += obj.money
     }
     this.setState({ list }, () => Taro.setStorageSync('list', list))
   }
