@@ -2,6 +2,7 @@
 
 .list {
   .list-month-title {
+    background-color: #f0f0f0;
     position: sticky;
     top: 0;
     display: flex;
@@ -29,29 +30,37 @@
     }
   }
   .list-content {
-    padding: 0 20px;
     transition: all all ease-in-out 0.8s;
     overflow: hidden;
+    width: calc(100% + 100px);
+    height: 100%;
+    box-sizing: border-box;
+    transform: translateX(-100px);
     .list-item {
-      padding: 10px 0;
+      padding: 0 20px;
+      line-height: 1.8;
+      box-sizing: border-box;
+      width: 100vw;
+      height: 100%;
       display: flex;
       position: relative;
-      View {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        width: 100%;
-      }
-      .icon {
+      justify-content: space-between;
+      align-items: center;
+      .absolute {
         position: absolute;
-        background-color: white;
-        border: 1px solid #557cf1;
-        border-radius: 50%;
-        padding: 5px 10px;
-        color: #557cf1;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
+        left: 100%;
+        padding-right: 100px;
+        background-color: #f44;
+        white-space: nowrap;
+        Text {
+          display: inline-block;
+          padding: 0 20px;
+          white-space: nowrap;
+          &.cancel {
+            color: white;
+            font-size: 34px;
+          }
+        }
       }
     }
   }

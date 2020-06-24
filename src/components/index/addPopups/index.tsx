@@ -70,7 +70,7 @@ export default class AddPopups extends Component<Props, State> {
             {
               isShow &&
               <Input
-                cursor-spacing={720}
+                cursor-spacing={45}
                 placeholder='例：昨天吃饭十五元 抢红包收入5.2元'
                 focus={isShow}
                 value={inputValue}

@@ -8,10 +8,10 @@ import { dateConvert } from '../../common/date'
 
 interface State {
   isShowAddPopups: boolean
-  list: List,
+  list: any,
 }
 interface List {
-  items: {}
+  items: any
   sCount: Number
   zCount: Number
 }
@@ -28,7 +28,8 @@ export default class Index extends Component<any, State> {
 
   componentWillMount() {
     const list = Taro.getStorageSync('list')
-    this.setState({ list })
+    if (list)
+      this.setState({ list })
   }
 
   componentDidMount() { }
@@ -52,13 +53,12 @@ export default class Index extends Component<any, State> {
 
   add(obj) {
     const { list } = this.state
-    const monthKey = dateConvert(obj.datetime, 'YYYY/MM')
-    const dayKey = dateConvert(obj.datetime, 'YYYY/MM/DD')
+    const monthKey = dateConvert(obj.datetime, 'YYYY-MM')
+    const dayKey = dateConvert(obj.datetime, 'YYYY-MM-DD')
     // 计算月和日的支出收入
     if (!list[monthKey]) {
       list[monthKey] = { items: {}, sCount: 0, zCount: 0 }
     }
-    Taro.showModal({ content: JSON.stringify(list) })
     if (!list[monthKey].items[dayKey]) {
       list[monthKey].items[dayKey] = { items: [], sCount: 0, zCount: 0 }
     }

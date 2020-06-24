@@ -17,7 +17,7 @@ export const matchDateTime = (str: string) => {
     str.replace(DateTimeReg, (match, p1, p2, p3, p4, p5, p6) => {
       // 确认哪年哪月
       datetime = new Date(
-        dateConvert(Date.now(), "yyyy/MM/DD 00:00")
+        dateConvert(Date.now(), "yyyy-MM-DD 00:00")
       ).getTime();
       // 确认哪日
       if (p1)
@@ -132,7 +132,7 @@ export const matchDate = (str: string): MatchResult => {
     str.replace(DateReg, (match, p1) => {
       // 确认哪年哪月
       datetime = new Date(
-        dateConvert(Date.now(), "yyyy/MM/DD 00:00")
+        dateConvert(Date.now(), "yyyy-MM-DD 00:00")
       ).getTime();
       // 确认哪日
       if (p1)
